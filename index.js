@@ -158,10 +158,8 @@ function getEditorias(editorias){
 function getPublicado(dateString){
     const date = getFormatDate(dateString);
     const dateHoje = new Date();
-    
-    // Calcula a diferença em milissegundos e converte para dias
     const diferencaDatasEmDia = Math.floor((dateHoje - date) / (24 * 60 * 60 * 1000));
-    
+
     if(diferencaDatasEmDia === 0){
         return 'Publicado hoje';
     }
@@ -174,18 +172,15 @@ function getPublicado(dateString){
 function getFormatDate(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     const [day, month, year] = datePart.split('/');
-    // Constrói uma string de data no formato ISO
-    const formattedDate = new Date(`${year}-${month}-${day}T${timePart}`);
+    const formattedDate = new Date(`${year}-${month}-${day}T${timePart}-03:00`);
 
-    // Verifica se a data é válida
     if (isNaN(formattedDate.getTime())) {
         console.error("Data inválida:", dateString);
-        return new Date(); // Retorna a data atual como fallback
+        return new Date();
     }
 
     return formattedDate;
 }
-
 function criarElementoHTML(element){
     return document.createElement(element);
 }
