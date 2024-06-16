@@ -158,7 +158,8 @@ function getEditorias(editorias){
 function getPublicado(dateString){
     const date = getFormatDate(dateString);
     const dateHoje = new Date();
-    diferencaDatasEmDia = Math.round((dateHoje - date) / 24 / 60 / 60 / 1000);
+    const diferencaDatasEmDia = Math.round((dateHoje - date) / (24 * 60 * 60 * 1000));
+    
     if(diferencaDatasEmDia === 0){
         return 'Publicado hoje';
     }
@@ -169,13 +170,16 @@ function getPublicado(dateString){
 }
 
 function getFormatDate(dateString) {
-    const dateStringArray = dateString.split(' ');
-    const onlyDate = dateStringArray[0].split('/');
-    const day = onlyDate[0];
-    const month = onlyDate[1];
-    const year = onlyDate[2];
-
-    return new Date(`${year}-${month}-${day}T${dateStringArray[1]}Z`);
+    const [datePart, timePart] = dateString.split(' ');
+    const [day, month, year] = datePart.split('/');
+    const formattedDate = new Date(`${year}-${month}-${day}T${timePart}Z`);
+    
+    if (isNaN(formattedDate.getTime())) {
+        console.error("Data inválida:", dateString);
+        return new Date();
+    }
+    
+    return formattedDate;
 }
 
 function criarElementoHTML(element){
